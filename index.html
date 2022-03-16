@@ -44,8 +44,8 @@
                 Build your cool Ice Cream
                 <span
                   class="quantity"
-                  :style="cart.length === 0 ? {color: 'red'} : {}"
-                  >{{cart.length}}</span
+                  :style="cart.length === 0 ? { color: 'red' } : {}"
+                  >{{ cart.length }}</span
                 >
               </h3>
               <!-- items start -->
@@ -53,23 +53,23 @@
                 <ul>
                   <!-- item start -->
                   <li
-                    class="item"
-                    :key="variant.id"
-                    v-for="variant in variants"
+                    class="item" id="item"
+                    v-for="flavour in flavourArray"
+                    :key="flavour.id"
                   >
-                    <span>{{ variant.name }}</span>
+                    <span>{{ flavour.name }}</span>
                     <div class="right">
                       <button
                         type="button"
                         class="plus rounded"
-                        @click="addToCart(variant.id)"
+                        @click="add(flavour.id)"
                       >
                         +
                       </button>
                       <button
                         type="button"
                         class="minus rounded"
-                        @click="removeFromCart(variant.id)"
+                        @click="remove(flavour.id)"
                       >
                         -
                       </button>
@@ -86,19 +86,13 @@
                 <div>{{ total }} Tk</div>
               </div>
               <!-- total price end -->
-              <button type="button" class="order rounded" @click="toggleModal">
+              <button type="button" class="order rounded" @click="toggle()">
                 Proceed
               </button>
             </div>
 
             <!-- modal start -->
-            <order-form
-              :cart="cart"
-              :total="total"
-              v-if="showModal"
-              @toggle-order-form="toggleModal"
-              @clear-cart="clearCart"
-            ></order-form>
+            <modal v-show="showModal" @hide="toggle" :price="total" @clear="cartDel"></modal>
             <!-- modal end -->
           </div>
           <!-- builder end -->
@@ -123,8 +117,5 @@
     <script src="./main.js"></script>
     <script src="./components/IceCream.js"></script>
     <script src="./components/OrderForm.js"></script>
-    <script>
-      const mountedapp = app.mount("#app");
-    </script>
   </body>
 </html>

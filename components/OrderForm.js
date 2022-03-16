@@ -1,22 +1,24 @@
-app.component("order-form", {
+app.component("modal", {
     props: {
-        cart: {
-            type: Array,
-            required: true
-        },
-        total: {
+        price: {
             type: Number,
-            required: true
+            required: true,
         }
     },
-    template:
-    /*html*/
-    `<div id="modal">
-        <div class="backdrop" @click="hideOrderForm"></div>
-        <div class="modalBody">
-        <div class="formContainer" id="orderForm">
-            <h1>Complete the form below and hit submit</h1>
-            <form class="orderForm" @submit.prevent="onSubmit">
+    data: function() {
+        return {
+            name: "",
+            address: "",
+            phone: "",
+        }
+       
+    },
+    template: `<div id="modal">
+                <div class="backdrop" @click="hide"></div>
+                <div class="modalBody">
+                    <div class="formContainer" id="orderForm">
+                        <h1>Complete the form below</h1>
+                        <form class="orderForm" @submit.prevent="sub">
             <ul>
                 <li>
                 <input
@@ -32,9 +34,10 @@ app.component("order-form", {
                     placeholder="Phone no."
                 />
                 </li>
+                <li>
                 <input
                     type="hidden"
-                    v-model.number="total"
+                    v-model.number="price"
                     class="fieldStyle fieldSplit alignRight"
                 />
                 </li>
@@ -50,30 +53,23 @@ app.component("order-form", {
                 </li>
             </ul>
             </form>
-        </div>
-        </div>
-    </div>`,
-    data() {
-        return {
-            name: '',
-            phone: '',
-            address: ''
-        }
-    },
+                    </div>
+                </div>
+            </div>`,
     methods: {
-        hideOrderForm() {
-            this.$emit("toggle-order-form");
+        hide() {
+            this.$emit("hide");
         },
-        onSubmit() {
-            let orderDetails = {
+        sub() {
+            let obj = {
                 name: this.name,
-                phone: this.phone,
                 address: this.address,
-                total: this.total
+                phone: this.phone,
+                price: this.price,
             }
-            console.log(orderDetails);
-            this.hideOrderForm();
-            this.$emit("clear-cart");
+            console.log(obj);
+            this.hide()
+            this.$emit("clear")
         }
     }
-});
+}).mount("#app")

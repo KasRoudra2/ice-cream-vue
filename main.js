@@ -1,36 +1,38 @@
 const app = Vue.createApp({
-    data() {
+    data: function() {
         return {
-            variants: [
-                {id: 1, name: 'Vanilla', price: 100},
-                {id: 2, name: 'Chocolate', price: 120},
-                {id: 3, name: 'Strawberry', price: 90},
-                {id: 4, name: 'Orange', price: 70},
-                {id: 5, name: 'Lemon', price: 30},
-            ],
-            cart: [],
-            showModal: false
+            showModal: false,
+            span: `<span style="color:red>Hi</span>`,
+            count: 0,
+            flavourArray: [
+                { id: 1, name: "Vanila", price: 100},
+                { id: 2, name: "Chocolate", price: 200},
+                { id: 3, name: "Strawberry", price: 300 },
+                { id: 4, name: "Orange", price: 400},
+                ],
+            cart: [] 
         }
     },
     methods: {
-        addToCart(variantId) {
-            this.cart.push(this.variants.find(variant => variant.id === variantId));
+        add(id) {
+            const item = this.flavourArray.find(x=>x.id===id);
+            this.cart.push(item);
         },
-        removeFromCart(variantId) {
-            let position = this.cart.findIndex(variant => variant.id === variantId);
-
-            this.cart.splice(position, 1);
+        remove(id) {
+            const index = this.cart.findIndex(x=>x.id===id);
+            index!==-1 && this.cart.splice(index, 1);
         },
-        toggleModal() {
+        cartDel() {
+            this.cart = []
+        },
+        toggle() {
             this.showModal = !this.showModal;
         },
-        clearCart() {
-            this.cart = [];
-        }
     },
     computed: {
         total() {
-            return this.cart.reduce((t, variant) => t + variant.price, 0);
+            return this.cart.reduce((total, current)=> total+current.price, 0)
         }
     }
 });
+
